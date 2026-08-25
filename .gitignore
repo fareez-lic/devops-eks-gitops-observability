@@ -10,7 +10,6 @@ npm-debug.log*
 *.tfstate.*
 *.tfvars
 crash.log
-.terraform.lock.hcl
 
 # Kubernetes / credentials
 kubeconfig
