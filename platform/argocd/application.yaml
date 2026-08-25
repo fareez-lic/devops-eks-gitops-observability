@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-observability-demo
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: devops-eks-gitops-observability
+spec:
+  project: gitops-demo
+
+  source:
+    repoURL: https://github.com/fareez-lic/devops-eks-gitops-observability.git
+    targetRevision: main
+    path: gitops/overlays/dev
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitops-demo
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
