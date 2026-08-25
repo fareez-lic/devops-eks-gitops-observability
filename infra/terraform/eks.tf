@@ -22,8 +22,8 @@ module "eks" {
 
   addons = {
     coredns    = {}
-    kube-proxy = {}
-    vpc-cni    = {}
+    kube-proxy = { before_compute = true }
+    vpc-cni    = { before_compute = true }
   }
 
   vpc_id     = module.vpc.vpc_id
