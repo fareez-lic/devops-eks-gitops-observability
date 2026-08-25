@@ -6,3 +6,4 @@ resources:
   - deployment.yaml
   - storageclass.yaml
   - service.yaml
+  - servicemonitor.yaml
