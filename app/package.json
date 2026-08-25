@@ -1,0 +1,17 @@
+{
+  "name": "gitops-observability-demo",
+  "version": "1.0.0",
+  "description": "Sample Node.js application deployed to Amazon EKS through Argo CD.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
