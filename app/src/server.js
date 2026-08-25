@@ -1,8 +1,39 @@
 import express from "express";
+import client from "prom-client";
 
 const app = express();
 const port = process.env.PORT || 3000;
 const startedAt = new Date().toISOString();
+
+const register = new client.Registry();
+
+client.collectDefaultMetrics({
+  register,
+  prefix: "gitops_demo_"
+});
+
+const httpRequestDurationSeconds = new client.Histogram({
+  name: "gitops_demo_http_request_duration_seconds",
+  help: "Duration of HTTP requests in seconds.",
+  labelNames: ["method", "route", "status_code"],
+  registers: [register]
+});
+
+app.disable("x-powered-by");
+
+app.use((request, response, next) => {
+  const stopTimer = httpRequestDurationSeconds.startTimer();
+
+  response.on("finish", () => {
+    stopTimer({
+      method: request.method,
+      route: request.route?.path || request.path,
+      status_code: response.statusCode
+    });
+  });
+
+  next();
+});
 
 app.get("/", (_request, response) => {
   response.type("html").send(`
@@ -12,30 +43,6 @@ app.get("/", (_request, response) => {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>GitOps Observability Demo</title>
-        <style>
-          body {
-            margin: 0;
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            color: #e2e8f0;
-            background: #0f172a;
-            font-family: system-ui, sans-serif;
-          }
-          main {
-            width: min(680px, 90vw);
-            padding: 3rem;
-            border: 1px solid #334155;
-            border-radius: 1rem;
-            background: #172033;
-          }
-          h1 { color: #38bdf8; }
-          code {
-            padding: .2rem .4rem;
-            border-radius: .25rem;
-            background: #0f172a;
-          }
-        </style>
       </head>
       <body>
         <main>
@@ -44,6 +51,7 @@ app.get("/", (_request, response) => {
           <p>This Node.js service is designed for deployment to Amazon EKS through Argo CD.</p>
           <p>Health check: <code>/health</code></p>
           <p>Readiness check: <code>/ready</code></p>
+          <p>Prometheus metrics: <code>/metrics</code></p>
         </main>
       </body>
     </html>
@@ -60,6 +68,11 @@ app.get("/health", (_request, response) => {
 
 app.get("/ready", (_request, response) => {
   response.status(200).json({ status: "ready" });
+});
+
+app.get("/metrics", async (_request, response) => {
+  response.set("Content-Type", register.contentType);
+  response.end(await register.metrics());
 });
 
 app.listen(port, () => {
