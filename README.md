@@ -6,7 +6,6 @@ A DevOps portfolio project using Terraform, AWS EKS, Argo CD GitOps, Prometheus,
 
 ## Architecture
 
-```text
 GitHub Actions → GHCR container image → Argo CD → Amazon EKS → Node.js app
                                               ↓
                                       Prometheus → Grafana
@@ -54,7 +53,6 @@ Verified deployment
 
 ## Repository layout
 
-```text
 app/                    Node.js application
 infra/terraform/        AWS infrastructure as code
 gitops/                 Kubernetes manifests and Kustomize files
@@ -87,7 +85,6 @@ Application endpoints
 
 AWS resources cost money while running. When finished:
 
-```bash
 export AWS_PROFILE=fareez-admin
 cd infra/terraform
 terraform destroy
