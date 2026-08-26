@@ -94,3 +94,6 @@ This project was independently rebuilt and extended for learning and portfolio p
 Author
 Fareez Lic — @fareez-lic
 
+## Detailed troubleshooting
+
+See [Troubleshooting and Lessons Learned](docs/troubleshooting.md).
