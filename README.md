@@ -1,5 +1,7 @@
 # DevOps EKS GitOps Observability
 
+[🌐 View My Portfolio Website](https://fareez-lic.github.io/My-portofolio-html-/)
+
 [![CI](https://github.com/fareez-lic/devops-eks-gitops-observability/actions/workflows/ci.yml/badge.svg)](https://github.com/fareez-lic/devops-eks-gitops-observability/actions/workflows/ci.yml)
 
 A DevOps portfolio project using Terraform, AWS EKS, Argo CD GitOps, Prometheus, Grafana, Docker, GitHub Actions, and a Node.js application.
